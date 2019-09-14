@@ -1,9 +1,8 @@
 /**
- * @flow
  */
-import {type ConfigT} from 'types';
+import { Config, DependencyConfig } from '@react-native-community/cli-types';
 
-function isValidRNDependency(config) {
+function isValidRNDependency(config: DependencyConfig) {
   return (
     Object.keys(config.platforms).filter(key => Boolean(config.platforms[key]))
       .length !== 0 ||
@@ -13,8 +12,10 @@ function isValidRNDependency(config) {
   );
 }
 
-function filterConfig(config) {
-  const filtered = {...config};
+function filterConfig(config: any) {
+  const filtered = {
+    ...config,
+  };
   Object.keys(filtered.dependencies).forEach(item => {
     if (!isValidRNDependency(filtered.dependencies[item])) {
       delete filtered.dependencies[item];
@@ -26,7 +27,8 @@ function filterConfig(config) {
 export default {
   name: 'config',
   description: 'Print CLI configuration',
-  func: async (argv: string[], ctx: ConfigT) => {
+  // @ts-ignore: TS6133: 'argv' is declared but its value is never read.
+  func: async (argv: string[], ctx: Config) => {
     console.log(JSON.stringify(filterConfig(ctx), null, 2));
   },
 };

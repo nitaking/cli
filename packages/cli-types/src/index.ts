@@ -74,6 +74,22 @@ interface PlatformConfig<
   };
 }
 
+export interface DependencyConfig {
+  name: string;
+  root: string;
+  platforms: {
+    android?: AndroidDependencyConfig | null;
+    ios?: IOSDependencyConfig | null;
+    [key: string]: any;
+  };
+  assets: string[];
+  hooks: {
+    prelink?: string;
+    postlink?: string;
+  };
+  params: InquirerPrompt[];
+}
+
 /**
  * @property root - Root where the configuration has been resolved from
  * @property reactNativePath - Path to React Native source
@@ -94,21 +110,7 @@ export interface Config {
   };
   assets: string[];
   dependencies: {
-    [key: string]: {
-      name: string;
-      root: string;
-      platforms: {
-        android?: AndroidDependencyConfig | null;
-        ios?: IOSDependencyConfig | null;
-        [key: string]: any;
-      };
-      assets: string[];
-      hooks: {
-        prelink?: string;
-        postlink?: string;
-      };
-      params: InquirerPrompt[];
-    };
+    [key: string]: DependencyConfig;
   };
   platforms: {
     android: PlatformConfig<
